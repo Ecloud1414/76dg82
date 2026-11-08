@@ -1670,5 +1670,270 @@ if(tb){tb.addEventListener('click',function(){goToPage(200)});}
 
 render();
 </script>
+<script>window.LIBRI_CHAT={"roli": "mësues i gramatikës arabe (nahv)", "libri": "«Nahv 1 (Gjuhë 3007)», shënimet e d. Halef el-Xhuhenit, faqet 39–70 (shumësi i rregullt femëror, i palakueshmi, foljet, ma'rife dhe nekire, përemrat, emri i përveçëm, «el», përemrat dëftorë, përemrat lidhorë, mubteda dhe haberi)", "rregulla": "- Kur bën i'rab: për çdo fjalë jep funksionin (p.sh. mubteda, haber, fa'il, mef'ul bihi, mudaf ilejhi), rasën (ref'/nasb/xherr/xhezm) dhe shenjën (damme, fetha, kesre, ja, elif…), si dhe nëse është mebni.", "chips": ["Shpjegoje këtë faqe thjesht, me pikat kryesore për provim", "Më bëj 5 pyetje testi nga kjo faqe", "Bëj i'rabin e shembujve kryesorë të kësaj faqeje", "Më jep shembuj të tjerë për rregullat e kësaj faqeje"], "chipsFjali": ["Shpjegoje këtë fjali dhe rregullën që përmban", "Bëj i'rabin e saj fjalë për fjalë", "Më jep 3 shembuj të ngjashëm me harekë"]};</script>
+<style>
+/* Paneli «Pyet Claude-in» (API): ari i lexuesit (#b8923e), letër e bardhë; tema e vetme e çelët si libri */
+.ask-btn{font-family:'Source Serif 4',Georgia,serif;font-size:.7rem;padding:3px 10px;border:1px solid #b8923e;border-radius:10px;background:#b8923e;color:#fff;cursor:pointer;margin-left:6px;white-space:nowrap}
+.ask-btn:hover{background:#9c7a2f}
+.ask-btn:focus-visible,.cp-btn:focus-visible,.cp-chip:focus-visible,.pask button:focus-visible,.cp-send:focus-visible{outline:2px solid #1f4fa8;outline-offset:2px}
+.mode-btn{unicode-bidi:isolate}
+.pask{margin-top:.7rem;padding-top:.6rem;border-top:1px solid #eee;flex-shrink:0;direction:ltr;text-align:left}
+.pask button{font-family:'Source Serif 4',Georgia,serif;font-size:.85rem;padding:5px 12px;border:1px solid #b8923e;border-radius:14px;background:#fff;color:#7a5a17;cursor:pointer}
+.pask button:hover{background:#f7f0e0}
+.cpanel{position:fixed;z-index:140;top:calc(44px + env(safe-area-inset-top,0px));bottom:calc(44px + env(safe-area-inset-bottom,0px));right:0;width:min(440px,100vw);background:#fff;border-left:1px solid #d9d2c3;box-shadow:-10px 0 30px rgba(0,0,0,.08);display:flex;flex-direction:column;direction:ltr;text-align:left;font-family:'Source Serif 4',Georgia,serif;color:#1d1a14}
+@media(max-width:600px){.cpanel{top:auto;bottom:0;left:0;width:auto;height:min(82vh,82dvh);border-left:none;border-top:1px solid #d9d2c3;border-radius:16px 16px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.12);padding-bottom:env(safe-area-inset-bottom,0px)}}
+@media(min-width:1000px){body.cp-open .app{padding-right:440px}body.cp-open #nextBtn{right:456px}}
+.cp-head{display:flex;align-items:center;gap:6px;padding:10px 12px 10px 16px;border-bottom:1px solid #eee5d3;flex-shrink:0}
+.cp-title{font-weight:600;font-size:1rem;flex:1;min-width:0}
+.cp-page{font-size:.72rem;color:#7a5a17;background:#f7f0e0;border-radius:10px;padding:2px 8px;white-space:nowrap}
+.cp-btn{font-family:inherit;font-size:.75rem;border:1px solid #ddd;background:#fff;color:#444;border-radius:10px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+.cp-btn:hover{border-color:#b8923e;color:#7a5a17}
+.cp-x{width:28px;height:28px;padding:0;border-radius:50%;font-size:15px;line-height:26px;text-align:center}
+.cp-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.cp-intro{font-size:.88rem;line-height:1.6;color:#5c5545}
+.cp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cp-chip{font-family:inherit;font-size:.82rem;line-height:1.3;text-align:left;border:1px solid #e3d6b8;background:#fbf8f1;color:#4a3a14;border-radius:14px;padding:6px 11px;cursor:pointer}
+.cp-chip:hover{background:#f3e9d2}
+.cp-set{border:1px solid #e3d6b8;background:#fbf8f1;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:.85rem;line-height:1.5}
+.cp-set label{font-weight:600;font-size:.8rem;color:#4a3a14}
+.cp-set input,.cp-set select{font-family:inherit;font-size:.9rem;border:1px solid #d9d2c3;border-radius:8px;padding:6px 8px;background:#fff;color:#1d1a14;width:100%;min-width:0}
+.cp-set .row{display:flex;gap:6px;flex-wrap:wrap}
+.cp-set .hint{font-size:.75rem;color:#6b6250}
+.cp-set .ok{color:#1e6b34;font-size:.8rem}
+.cp-quote{border-right:3px solid #b8923e;background:#fbf8f1;border-radius:8px;padding:8px 10px 8px 34px;position:relative;flex-shrink:0;margin:0 16px}
+.cp-quote .qa{direction:rtl;text-align:right;font-family:'Noto Naskh Arabic',serif;font-size:1.05rem;line-height:1.9;max-height:5.7em;overflow:auto}
+.cp-quote .qs{font-size:.78rem;color:#6b6250;line-height:1.5;margin-top:2px;max-height:3em;overflow:auto}
+.cp-quote .qx{position:absolute;left:6px;top:6px;width:22px;height:22px;border:none;border-radius:50%;background:#eee;color:#555;cursor:pointer;font-size:12px;line-height:22px;padding:0}
+.cp-quote .ql{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:#b8923e;margin-bottom:2px}
+.msg{font-size:.95rem;line-height:1.7;max-width:100%;min-width:0;overflow-wrap:anywhere}
+.msg.u{align-self:flex-end;background:#1f3a68;color:#fff;border-radius:14px 14px 4px 14px;padding:8px 12px;max-width:88%}
+.msg.a{align-self:stretch}
+.msg.a p,.msg.a ul,.msg.a ol{margin:0 0 .55em}
+.msg.a ul,.msg.a ol{padding-left:1.3em}
+.msg.a li{margin:.15em 0}
+.msg .ar{font-family:'Noto Naskh Arabic',serif;font-size:1.22em;line-height:1.6}
+.msg.a h4{font-size:1rem;margin:.6em 0 .3em;color:#7a5a17}
+.msg.a .wait{color:#8a8070;font-style:italic}
+.msg.a .err{color:#a1261b;font-size:.85rem}
+.msg.a .cost{font-size:.7rem;color:#9a907c;margin-top:-.3em}
+.cp-foot{border-top:1px solid #eee5d3;padding:10px 12px;flex-shrink:0}
+.cp-row{display:flex;gap:8px;align-items:flex-end}
+.cp-row textarea{flex:1;min-width:0;resize:none;font-family:inherit;font-size:.95rem;line-height:1.45;border:1px solid #d9d2c3;border-radius:12px;padding:8px 10px;max-height:8.5em;min-height:2.6em;color:#1d1a14;background:#fff}
+.cp-row textarea:focus{outline:none;border-color:#b8923e;box-shadow:0 0 0 2px rgba(184,146,62,.2)}
+.cp-send{font-family:inherit;font-size:.9rem;border:none;border-radius:12px;padding:9px 14px;background:#b8923e;color:#fff;cursor:pointer;white-space:nowrap}
+.cp-send:disabled{opacity:.45;cursor:default}
+.cp-send.stop{background:#555}
+.cp-note{font-size:.68rem;color:#8a8070;margin-top:6px;line-height:1.4}
+@media (prefers-reduced-motion:no-preference){.cpanel{animation:cpin .18s ease-out}@keyframes cpin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+</style>
+
+<div class="cpanel" id="cpanel" hidden role="dialog" aria-label="Pyet Claude-in">
+  <div class="cp-head">
+    <span class="cp-title">Pyet Claude-in</span>
+    <span class="cp-page" id="cpPage"></span>
+    <button class="cp-btn" id="cpSetBtn" type="button" aria-label="Cilësimet">Cilësimet</button>
+    <button class="cp-btn" id="cpNew" type="button">E re</button>
+    <button class="cp-btn cp-x" id="cpClose" type="button" aria-label="Mbyll">&times;</button>
+  </div>
+  <div class="cp-body" id="cpBody">
+    <div class="cp-set" id="cpSet" hidden>
+      <div><b>Lidhja me Claude API</b></div>
+      <label for="cpKey">Çelësi API</label>
+      <input id="cpKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-api03-…">
+      <div class="hint">Krijoje te platform.claude.com → API Keys, në organizatën e lidhur me planin tënd (kreditë mujore të planit shpenzohen të parat). Çelësi ruhet vetëm në këtë shfletues, në këtë pajisje.</div>
+      <label for="cpModel">Modeli</label>
+      <select id="cpModel">
+        <option value="claude-opus-5-5">Opus 5.5 – më i sakti (~0,05 $ për pyetje)</option>
+        <option value="claude-sonnet-5-5">Sonnet 5.5 – gjysma e çmimit (~0,025 $)</option>
+        <option value="claude-haiku-5-5">Haiku 5.5 – shumë i lirë, më pak i saktë (~0,001 $)</option>
+      </select>
+      <div class="row"><button class="cp-send" id="cpSave" type="button">Ruaj</button><button class="cp-btn" id="cpDel" type="button">Fshi çelësin</button></div>
+      <div class="ok" id="cpSetMsg"></div>
+      <div class="hint" id="cpUsage"></div>
+    </div>
+    <div class="cp-intro" id="cpIntro">Pyet për faqen që po lexon. Claude e sheh tekstin arab, përkthimin dhe shpjegimet e saj, dhe të përgjigjet shqip.</div>
+    <div class="cp-chips" id="cpChips"></div>
+  </div>
+  <div class="cp-quote" id="cpQuote" hidden>
+    <div class="ql">Fjalia e zgjedhur</div>
+    <div class="qa" id="cpQa"></div>
+    <div class="qs" id="cpQs"></div>
+    <button class="qx" id="cpQx" type="button" aria-label="Hiq fjalinë">&times;</button>
+  </div>
+  <div class="cp-foot">
+    <div class="cp-row">
+      <textarea id="cpInput" rows="1" placeholder="Shkruaj pyetjen…"></textarea>
+      <button class="cp-send" id="cpSend" type="button">Dërgo</button>
+    </div>
+    <div class="cp-note">Përgjigjet i jep Claude dhe mund të kenë gabime: teksti i librit ka përparësi.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var CFG=window.LIBRI_CHAT||{};
+  var SDK_URL='https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm';
+  var PRICE={'claude-opus-5-5':[4,20,0.20],'claude-sonnet-5-5':[2,10,0.20],'claude-haiku-5-5':[0.10,0.50,0.01]}; // $/1M: hyrje, dalje, lexim nga cache
+  var Anthropic=null, client=null, clientKey='', turns=[], stream=null, busy=false, sel=null;
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+  var $=function(id){return document.getElementById(id)};
+  var panel=$('cpanel'), body=$('cpBody'), chips=$('cpChips'), intro=$('cpIntro'), inp=$('cpInput'), send=$('cpSend'), pageTag=$('cpPage'), quote=$('cpQuote'), setBox=$('cpSet');
+
+  var bar=document.querySelector('.mode-btns');
+  var askBtn=document.createElement('button');askBtn.className='ask-btn';askBtn.type='button';askBtn.textContent='Pyet Claude-in';
+  bar.insertBefore(askBtn,bar.firstChild);
+  var pask=document.createElement('div');pask.className='pask';
+  pask.innerHTML='<button type="button" id="askSent">Pyet Claude-in për këtë fjali</button>';
+  $('popup').appendChild(pask);
+
+  var RULES=[
+   'Ti je '+(CFG.roli||'mësues')+' për një student shqiptar që studion në Universitetin Islam të Medinës.',
+   'Materiali: '+(CFG.libri||'libri që po lexon')+'.',
+   'Studenti po lexon faqen e dhënë më poshtë: teksti arab, përkthimi shqip dhe shpjegimet shqip.',
+   '',
+   'Rregullat e përgjigjes:',
+   '- Përgjigju gjithmonë SHQIP, qartë dhe thjesht, si për t\'u përgatitur për provim.',
+   '- Fjalët dhe shembujt arabë shkruaji me harekë, dhe menjëherë pas tyre përkthimin shqip në kllapa.',
+   '- Mbështetu te teksti i faqes dhe te terminologjia e librit. Nëse pyetja del jashtë faqes, thuaje shkurt dhe përgjigju sipas dijes së saktë të fushës.',
+   (CFG.rregulla||''),
+   '- Mos e përkthe vetë asnjë ajet kuranor: jep vetëm arabishten dhe referencën.',
+   '- Mbaje përgjigjen të shkurtër (deri rreth 250 fjalë), përveç kur studenti kërkon më shumë.',
+   '- Kur kërkohen pyetje testi: numëroji, jep 4 opsione (a, b, c, ç) për secilën dhe përgjigjet e sakta me një fjali shpjegimi në fund.',
+   '- Mund të përdorësh **bold** dhe lista me «-» ose «1.». Mos përdor tabela.'
+  ].filter(function(x){return x!==''||true}).join('\n');
+
+  function pagesVisible(){var a=[];document.querySelectorAll('#page .page-text').forEach(function(p){if(!p.hidden)a.push(p)});return a}
+  function pageLabel(){var v=pagesVisible();if(!v.length)return'';return'Faqja '+v.map(function(p){return p.getAttribute('data-n')||p.getAttribute('data-p')}).join('–')}
+  function topicOf(pg){var t='',all=document.querySelectorAll('#page .page-text');for(var i=0;i<all.length;i++){all[i].querySelectorAll('h2,h3').forEach(function(h){t=h.textContent.trim()});if(all[i]===pg)break}return t}
+  function pageText(){
+    var out=[];
+    pagesVisible().forEach(function(p){
+      out.push('=== Faqja '+(p.getAttribute('data-n')||p.getAttribute('data-p'))+' (tema: '+topicOf(p)+') ===');
+      p.querySelectorAll('.s').forEach(function(s){
+        if(s.parentElement.closest('.s'))return;
+        var ar=s.textContent.replace(/\s+/g,' ').trim();if(!ar)return;
+        var line='AR: '+ar+'\nSQ: '+(s.getAttribute('data-sq')||'');
+        var sh=s.getAttribute('data-sh');if(sh)line+='\nSHPJEGIMI: '+sh;
+        out.push(line);
+      });
+    });
+    var t=out.join('\n\n');return t.length>30000?t.slice(0,30000)+'\n[…]':t;
+  }
+
+  function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function arw(h){return h.replace(/([؀-ۿﹰ-﻿][؀-ۿﹰ-﻿ـً-ٰٟ ]*[؀-ۿﹰ-﻿ً-ٰٟ]|[؀-ۿ])/g,'<span class="ar">$1</span>')}
+  function inl(t){return arw(esc(t)).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<i>$2</i>').replace(/`([^`]+)`/g,'<b>$1</b>')}
+  function md(src){
+    var lines=String(src).replace(/\r/g,'').split('\n'),h='',list=null,para=[];
+    function fp(){if(para.length){h+='<p dir="auto">'+para.map(inl).join('<br>')+'</p>';para=[]}}
+    function fl(){if(list){h+='</'+list+'>';list=null}}
+    lines.forEach(function(l){var m;
+      if(!l.trim()){fp();fl();return}
+      if((m=l.match(/^\s*#{1,6}\s+(.*)$/))){fp();fl();h+='<h4 dir="auto">'+inl(m[1])+'</h4>';return}
+      if((m=l.match(/^\s*[-•*]\s+(.*)$/))){fp();if(list!=='ul'){fl();h+='<ul>';list='ul'}h+='<li dir="auto">'+inl(m[1])+'</li>';return}
+      if((m=l.match(/^\s*\d+[.)]\s+(.*)$/))){fp();if(list!=='ol'){fl();h+='<ol>';list='ol'}h+='<li dir="auto">'+inl(m[1])+'</li>';return}
+      fl();para.push(l)});
+    fp();fl();return h;
+  }
+
+  var CHIPS_PAGE=CFG.chips||['Shpjegoje këtë faqe thjesht, me pikat kryesore për provim','Më bëj 5 pyetje testi nga kjo faqe','Më jep shembuj të tjerë për rregullat e kësaj faqeje'];
+  var CHIPS_SENT=CFG.chipsFjali||['Shpjegoje këtë fjali dhe rregullën që përmban','Më jep 3 shembuj të ngjashëm me harekë'];
+  function drawChips(){
+    chips.innerHTML='';
+    (sel?CHIPS_SENT:CHIPS_PAGE).forEach(function(c){var b=document.createElement('button');b.type='button';b.className='cp-chip';b.textContent=c;b.addEventListener('click',function(){ask(c)});chips.appendChild(b)});
+    var empty=!body.querySelector('.msg');intro.hidden=!empty;chips.hidden=busy||!empty||!key();
+  }
+  function setSel(s){sel=s;quote.hidden=!s;if(s){$('cpQa').textContent=s.ar;$('cpQs').textContent=s.sq||''}drawChips()}
+  function updPage(){pageTag.textContent=pageLabel()}
+  function key(){return ls('anthropic_key')||''}
+  function model(){var m=ls('anthropic_model');return PRICE[m]?m:'claude-opus-5-5'}
+  function month(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)}
+  function usage(){try{var u=JSON.parse(ls('anthropic_usage')||'{}');return u.m===month()?u:{m:month(),usd:0,n:0}}catch(e){return{m:month(),usd:0,n:0}}}
+  function showUsage(){var u=usage();$('cpUsage').textContent='Këtë muaj në këtë pajisje: '+u.n+' pyetje, rreth '+u.usd.toFixed(2)+' $.'}
+  function openSet(show){setBox.hidden=!show;if(show){$('cpKey').value=key();$('cpModel').value=model();$('cpSetMsg').textContent='';showUsage()}drawChips()}
+  function open(){panel.hidden=false;document.body.classList.add('cp-open');updPage();openSet(!key());drawChips();setTimeout(function(){try{(key()?inp:$('cpKey')).focus({preventScroll:true})}catch(e){}},50)}
+  function close(){panel.hidden=true;document.body.classList.remove('cp-open');if(stream)stream.abort()}
+  function scrollEnd(){body.scrollTop=body.scrollHeight}
+  function addMsg(cls,html){var d=document.createElement('div');d.className='msg '+cls;d.innerHTML=html;body.appendChild(d);scrollEnd();return d}
+
+  function errText(e){
+    var st=e&&e.status, m=((e&&e.message)||'')+' '+JSON.stringify((e&&e.error)||'');
+    if(/credit balance|billing/i.test(m))return'Kreditë API mbaruan. Chat-i ndalet vetë këtu dhe nuk paguhet asgjë; kreditë e planit rimbushen në ciklin e ri të faturimit.';
+    if(st===401)return'Çelësi API nuk pranohet. Kontrolloje te «Cilësimet».';
+    if(st===403)return'Ky çelës nuk ka leje për këtë model ose organizatë.';
+    if(st===404)return'Modeli nuk u gjet. Zgjidh një model tjetër te «Cilësimet».';
+    if(st===429)return'Shumë pyetje brenda pak kohe ose u arrit kufiri i shpenzimit. Provo pas pak.';
+    if(st===413)return'Biseda u bë shumë e gjatë. Kliko «E re».';
+    if(st>=500)return'Shërbimi i Claude-it është i ngarkuar. Provo sërish pas pak.';
+    if(!st)return'S\'u arrit lidhja me Claude. Kontrollo internetin dhe provo sërish.';
+    return'Gabim ('+st+'). Provo sërish.';
+  }
+  function setBusy(b){busy=b;send.textContent=b?'Ndalo':'Dërgo';send.classList.toggle('stop',b);drawChips()}
+
+  async function ask(q){
+    q=(q||'').trim();if(!q||busy)return;
+    if(!key()){openSet(true);$('cpSetMsg').textContent='Së pari ngjit çelësin API.';return}
+    var ctx='--- TEKSTI I FAQES ---\n'+pageText();
+    if(sel)ctx+='\n\n--- FJALIA QË STUDENTI ZGJODHI ---\nAR: '+sel.ar+'\nSQ: '+(sel.sq||'')+(sel.sh?'\nSHPJEGIMI: '+sel.sh:'');
+    var shown=sel?'«'+sel.ar.slice(0,60)+(sel.ar.length>60?'…':'')+'»\n'+q:q;
+    addMsg('u','<span dir="auto">'+esc(shown).replace(/\n/g,'<br>')+'</span>');
+    turns.push({role:'user',content:(sel?'[Për fjalinë: '+sel.ar+']\n':'')+q});
+    if(turns.length>12)turns=turns.slice(turns.length-12);
+    while(turns.length&&turns[0].role!=='user')turns.shift();
+    var bub=addMsg('a','<span class="wait">Duke menduar…</span>');
+    inp.value='';grow();setBusy(true);openSet(false);intro.hidden=true;
+    var M=model(), got='';
+    try{
+      if(!Anthropic)Anthropic=(await import(SDK_URL)).default;
+      if(!client||clientKey!==key()){client=new Anthropic({apiKey:key(),dangerouslyAllowBrowser:true});clientKey=key()}
+      var params={model:M,max_tokens:8000,cache_control:{type:'ephemeral'},output_config:{effort:'medium'},
+        system:RULES+'\n\n'+ctx,messages:turns};
+      if(M!=='claude-haiku-5-5'){params.betas=['server-side-fallback-2026-07-01'];params.fallbacks='default'}
+      stream=client.beta.messages.stream(params);
+      stream.on('text',function(d,snap){got=snap;bub.innerHTML=md(snap);scrollEnd()});
+      var msg=await stream.finalMessage();
+      var txt=(msg.content||[]).filter(function(b){return b.type==='text'}).map(function(b){return b.text}).join('');
+      if(msg.stop_reason==='refusal'&&!txt){bub.innerHTML='<p class="err">Claude nuk iu përgjigj kësaj pyetjeje. Formuloje ndryshe.</p>';turns.pop()}
+      else{
+        bub.innerHTML=md(txt)+(msg.stop_reason==='max_tokens'?'<p class="err">Përgjigjja u ndërpre për shkak të gjatësisë.</p>':'');
+        turns.push({role:'assistant',content:txt||'…'});
+      }
+      var u=msg.usage||{},p=PRICE[M]||PRICE['claude-opus-5-5'];
+      var usd=((u.input_tokens||0)*p[0]+(u.cache_creation_input_tokens||0)*p[0]*1.25+(u.cache_read_input_tokens||0)*p[2]+(u.output_tokens||0)*p[1])/1e6;
+      var us=usage();us.usd+=usd;us.n+=1;ls('anthropic_usage',JSON.stringify(us));
+      bub.insertAdjacentHTML('beforeend','<div class="cost">≈ '+usd.toFixed(3)+' $ · '+M.replace('claude-','')+'</div>');
+    }catch(e){
+      var aborted=e&&(e.name==='APIUserAbortError'||/abort/i.test(e.name||''));
+      if(aborted){bub.innerHTML=got?md(got):'<span class="wait">U ndal.</span>';if(got)turns.push({role:'assistant',content:got});else turns.pop()}
+      else{bub.innerHTML=(got?md(got):'')+'<p class="err">'+esc(errText(e))+'</p>';turns.pop();if(e&&e.status===401)openSet(true)}
+    }finally{stream=null;setBusy(false);scrollEnd()}
+  }
+
+  function grow(){inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,140)+'px'}
+  inp.addEventListener('input',grow);
+  inp.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(inp.value)}if(e.key==='Escape')close()});
+  ['cpKey','cpModel'].forEach(function(id){$(id).addEventListener('keydown',function(e){e.stopPropagation()})});
+  send.addEventListener('click',function(){if(busy){if(stream)stream.abort()}else ask(inp.value)});
+  $('cpClose').addEventListener('click',close);
+  $('cpSetBtn').addEventListener('click',function(){openSet(setBox.hidden)});
+  $('cpSave').addEventListener('click',function(){
+    var k=$('cpKey').value.trim();
+    if(k&&!/^sk-ant-/.test(k)){$('cpSetMsg').textContent='Ky nuk duket si çelës API (fillon me «sk-ant-»).';return}
+    if(k)ls('anthropic_key',k);ls('anthropic_model',$('cpModel').value);
+    $('cpSetMsg').textContent=k?'U ruajt. Tani mund të pyesësh.':'Modeli u ruajt.';client=null;drawChips();
+    if(k)setTimeout(function(){openSet(false);try{inp.focus()}catch(e){}},700);
+  });
+  $('cpDel').addEventListener('click',function(){ls('anthropic_key',null);$('cpKey').value='';client=null;$('cpSetMsg').textContent='Çelësi u fshi nga ky shfletues.';drawChips()});
+  $('cpNew').addEventListener('click',function(){if(stream)stream.abort();turns=[];body.querySelectorAll('.msg').forEach(function(m){m.remove()});setSel(null);drawChips()});
+  $('cpQx').addEventListener('click',function(){setSel(null)});
+  askBtn.addEventListener('click',function(){if(panel.hidden)open();else close()});
+  $('askSent').addEventListener('click',function(e){
+    e.stopPropagation();var s=activeEl&&(activeEl.closest('.s')||activeEl);if(!s)return;
+    setSel({ar:s.textContent.replace(/\s+/g,' ').trim(),sq:s.getAttribute('data-sq')||'',sh:s.getAttribute('data-sh')||''});
+    hide();open();
+  });
+  var _render=render;render=function(){_render();if(!panel.hidden)updPage()};
+})();
+</script>
 </body>
 </html>
