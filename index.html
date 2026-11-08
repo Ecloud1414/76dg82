@@ -1743,10 +1743,10 @@ render();
       <div class="hint">Krijoje te platform.claude.com → API Keys, në organizatën e lidhur me planin tënd (kreditë mujore të planit shpenzohen të parat). Çelësi ruhet vetëm në këtë shfletues, në këtë pajisje.</div>
       <label for="cpModel">Modeli</label>
       <select id="cpModel">
-        <option value="claude-opus-4-8">Opus 4.8 (~0,06 $ për pyetje)</option>
-        <option value="claude-opus-5-5">Opus 5.5 (~0,05 $)</option>
-        <option value="claude-sonnet-5-5">Sonnet 5.5 – gjysma e çmimit (~0,025 $)</option>
-        <option value="claude-haiku-5-5">Haiku 5.5 – shumë i lirë, më pak i saktë (~0,001 $)</option>
+        <option value="claude-opus-4-8">Opus 4.8</option>
+        <option value="claude-opus-5-5">Opus 5.5</option>
+        <option value="claude-sonnet-5-5">Sonnet 5.5</option>
+        <option value="claude-haiku-5-5">Haiku 5.5</option>
       </select>
       <div class="row"><button class="cp-send" id="cpSave" type="button">Ruaj</button><button class="cp-btn" id="cpDel" type="button">Fshi çelësin</button></div>
       <div class="ok" id="cpSetMsg"></div>
@@ -1850,7 +1850,7 @@ render();
   function model(){var m=ls('anthropic_model2');return PRICE[m]?m:'claude-opus-4-8'}
   function month(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)}
   function usage(){try{var u=JSON.parse(ls('anthropic_usage')||'{}');return u.m===month()?u:{m:month(),usd:0,n:0}}catch(e){return{m:month(),usd:0,n:0}}}
-  function showUsage(){var u=usage();$('cpUsage').textContent='Këtë muaj në këtë pajisje: '+u.n+' pyetje, rreth '+u.usd.toFixed(2)+' $.'}
+  function showUsage(){var u=usage();$('cpUsage').textContent='Këtë muaj në këtë pajisje: '+u.n+' pyetje.'}
   function openSet(show){setBox.hidden=!show;if(show){$('cpKey').value=key();$('cpModel').value=model();$('cpSetMsg').textContent='';showUsage()}drawChips()}
   function open(){panel.hidden=false;document.body.classList.add('cp-open');updPage();openSet(!key());drawChips();setTimeout(function(){try{(key()?inp:$('cpKey')).focus({preventScroll:true})}catch(e){}},50)}
   function close(){panel.hidden=true;document.body.classList.remove('cp-open');if(stream)stream.abort()}
@@ -1903,7 +1903,7 @@ render();
       var u=msg.usage||{},p=PRICE[M]||PRICE['claude-opus-4-8'];
       var usd=((u.input_tokens||0)*p[0]+(u.cache_creation_input_tokens||0)*p[0]*1.25+(u.cache_read_input_tokens||0)*p[2]+(u.output_tokens||0)*p[1])/1e6;
       var us=usage();us.usd+=usd;us.n+=1;ls('anthropic_usage',JSON.stringify(us));
-      bub.insertAdjacentHTML('beforeend','<div class="cost">≈ '+usd.toFixed(3)+' $ · '+M.replace('claude-','')+'</div>');
+      
     }catch(e){
       var aborted=e&&(e.name==='APIUserAbortError'||/abort/i.test(e.name||''));
       if(aborted){bub.innerHTML=got?md(got):'<span class="wait">U ndal.</span>';if(got)turns.push({role:'assistant',content:got});else turns.pop()}
